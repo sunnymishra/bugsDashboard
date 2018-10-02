@@ -1,0 +1,19 @@
+{
+	"content":[
+		"Yesterday",
+		"_bugCount_ bugs were logged in our team.",
+		"An engineer could use same effort",
+		"to finish",
+		"_userStoryCount_ new User stories",
+		"and also",
+		"_leisureTask_"
+	],
+	"leisureTaskList":[
+		"Go for some Walk after lunch",
+		"Do some Cycling downstairs",
+		"Join Guitar classes here @work",
+		"Join Yoga classes here @work",
+		"Read a Book from our library",
+		"Work on your GarageFest idea"
+	]
+}
