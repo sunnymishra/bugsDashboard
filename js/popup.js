@@ -27,14 +27,14 @@ window.onload = () => {
 		chrome.storage.local.get('__bug_count', function(bugCountData) {
 			if(bugCountData['__bug_count']){
 				let bugCountTag = document.querySelector("div#dashboardDiv span.bugCount");
-				// bugCountTag.textContent=bugCountData['__bug_count'];
+				bugCountTag.textContent=bugCountData['__bug_count'];
 			}
 		});
 		// Below updating UserStory count
 		chrome.storage.local.get('__user_story_count', function(userStoryCountData) {
 			if(userStoryCountData['__user_story_count']){
 				let userStoryCountTag = document.querySelector('div#dashboardDiv span.userStoryCount');
-				// userStoryCountTag.textContent=userStoryCountData['__user_story_count'];
+				userStoryCountTag.textContent=userStoryCountData['__user_story_count'];
 			}
 		});
 		// Below updating Leisure task
@@ -46,6 +46,13 @@ window.onload = () => {
 		// }
 		let leisureTaskTag = document.querySelector("div#dashboardDiv span.leisureTask");
 		leisureTaskTag.textContent=newValue;
+
+		chrome.storage.local.get('__refresh_time', function(refreshTimeData) {
+			if(refreshTimeData['__refresh_time']){
+				let refreshTimeTag = document.querySelector('span#refreshTime');
+				refreshTimeTag.textContent=refreshTimeData['__refresh_time'];
+			}
+		});
 	};
 
 	updateDashboardContent();	// When popup screen is open, need to display stored bugCount and userStoryCount
@@ -56,21 +63,37 @@ window.onload = () => {
 			switch(request.method)
 			{
 				case 'setProcessedBugCountEvent':
-					refreshUI(request.data.bugCount, request.data.userStoryCount);
+					refreshUI(request.data.bugCount);
 					// reply(_global.messageText);
 					break;
+				case 'setProcessedStoryCountEvent':
+					refreshUI(null, request.data.userStoryCount);
+					// reply(_global.messageText);
+					break;
+				case 'setRefreshTimeEvent':
+					refreshUI(null, null, request.data.refreshTime);
+					// reply(_global.messageText);
+					break;
+					
 				default:
 					reply({data: 'failure', message:'Invalid arguments'});
 			}
 		}
 	);
 
-	const refreshUI = (bugCount, userStoryCount) => {
-		let bugCountTag = document.querySelector("div#dashboardDiv span.bugCount");
-		bugCountTag.innerHTML=bugCount;
-
-		let userStoryCountTag = document.querySelector('div#dashboardDiv span.userStoryCount');
-		userStoryCountTag.innerHTML=userStoryCount;
+	const refreshUI = (bugCount, userStoryCount, refreshTime) => {
+		if(bugCount || bugCount==0){
+			let bugCountTag = document.querySelector("div#dashboardDiv span.bugCount");
+			bugCountTag.innerHTML=bugCount;
+		}
+		if(userStoryCount || userStoryCount==0){
+			let userStoryCountTag = document.querySelector('div#dashboardDiv span.userStoryCount');
+			userStoryCountTag.innerHTML=userStoryCount;
+		}
+		if(refreshTime){
+			let refreshTimeTag = document.querySelector('span#refreshTime');
+			refreshTimeTag.innerHTML=refreshTime;
+		}
 	};
 
 };

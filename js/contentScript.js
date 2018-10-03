@@ -14,10 +14,16 @@ $(document).ready(function() {
 
 		let result=document.querySelector("span.bz_result_count");
 		if(result){
-			bugCountString=result.innerHTML;
-			if(bugCountString){
-				bugCountString=bugCountString.replace(_config.replaceableText, '');
-				bugCountString=bugCountString.trim();
+			if(result.querySelector("span.zero_results")){	// If 0 bugCount then expecting <span class='zero_results'>
+				bugCountString=0;
+			}else if(result.innerHTML && result.innerHTML.includes('One bug found.')){
+				bugCountString=1;
+			}else{
+				bugCountString=result.innerHTML;
+				if(bugCountString){
+					bugCountString=bugCountString.replace(_config.replaceableText, '');
+					bugCountString=bugCountString.trim();
+				}
 			}
 		}
 		console.log('______bugCountString:'+ bugCountString);
@@ -31,6 +37,6 @@ const isUrlCorrect = (currentUrl) => {
     let dateStr = timeSolver.getString(date, "YYYY-MM-DD");
     // let date = new Date().toISOString().slice(0, 10);
 
-	return (urlParams.get('chfieldfrom')==dateStr && urlParams.getAll('product').includes('PFM 3.0') && 
+	return (urlParams.get('chfieldfrom') && urlParams.get('chfieldto') && urlParams.getAll('product').includes('PFM 3.0') && 
 		urlParams.getAll('product').includes('Demo Site'));
 };
