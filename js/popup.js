@@ -38,7 +38,7 @@ window.onload = () => {
 			}
 		});
 		// Below updating Leisure task
-		let leisureTaskList=_bg._global.leisureTaskList;
+		let leisureTaskList=_bg._global.leisureTaskList; 
 		// while(true){
 		let newValue = leisureTaskList[Math.floor(Math.random() * leisureTaskList.length)];
 		// 	if(newValue != )
