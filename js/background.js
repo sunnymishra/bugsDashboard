@@ -72,10 +72,10 @@ const startRefresh = (period) => {
 const updateBugCount = (bugCount) => {
 	console.log('updateBugCount(). bugCount: %s', bugCount);
 	
-    let keyValue={'__bug_count': bugCount};
+	let keyValue={'__bug_count': bugCount};
 	chrome.storage.local.set(keyValue, storageLogger(performance.now(), keyValue));
 	
-    chrome.tabs.remove(_global.tabId);
+	chrome.tabs.remove(_global.tabId);
 
 	if(_global.period=="day" && bugCount <= _config.minimumBugCount){
 		console.log('updateBugCount() going to invoke startRefresh(). bugCount: %s', bugCount);
@@ -83,28 +83,31 @@ const updateBugCount = (bugCount) => {
 		return;
 	}
 
+	keyValue={'__period': _global.period};
+	chrome.storage.local.set(keyValue, storageLogger(performance.now(), keyValue));
+
 	chrome.extension.sendMessage({'method':'setProcessedBugCountEvent', 
-		'data':{'bugCount':bugCount}}, (response)=>{
+		'data':{'period': _global.period, 'bugCount':bugCount}}, (response)=>{
 	});
 	// Below we are fetching story vs bugs time taken in last few sprints
 	let userStoryCount = fetchUserStoryCount(bugCount);
 	
-    keyValue={'__user_story_count': userStoryCount};
+	keyValue={'__user_story_count': userStoryCount};
 	chrome.storage.local.set(keyValue, storageLogger(performance.now(), keyValue));
 
 	chrome.extension.sendMessage({'method':'setProcessedStoryCountEvent', 
 		'data':{'userStoryCount':userStoryCount}}, (response)=>{ 
 	});
 
-    let date=new Date();
-    let refreshTimeStr=date.getDate()+ " " + timeSolver.getAbbrMonth(date) + " " + timeSolver.getString(date, "HH:MM:SS");
+	let date=new Date();
+	let refreshTimeStr=date.getDate()+ " " + timeSolver.getAbbrMonth(date) + " " + timeSolver.getString(date, "HH:MM:SS");
 
-    keyValue={'__refresh_time': refreshTimeStr};
-    chrome.storage.local.set(keyValue, storageLogger(performance.now(), keyValue));
+	keyValue={'__refresh_time': refreshTimeStr};
+	chrome.storage.local.set(keyValue, storageLogger(performance.now(), keyValue));
 
-    chrome.extension.sendMessage({'method':'setRefreshTimeEvent', 
-        'data':{'refreshTime':refreshTimeStr}}, (response)=>{ 
-    });
+	chrome.extension.sendMessage({'method':'setRefreshTimeEvent', 
+		'data':{'refreshTime':refreshTimeStr}}, (response)=>{ 
+	});
 };
 
 const fetchUserStoryCount = (bugCount) =>{

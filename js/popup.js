@@ -1,18 +1,53 @@
+_global={};
+
+// Using Object destructuring in order to use Named parameter here
+const refreshUI = ({period, bugCount, userStoryCount, leisureTask, refreshTime}) => {
+	if(period){
+		let dashboardDiv = document.getElementById('dashboardDiv');
+		let genericContent=dashboardDiv.innerHTML;
+
+		if(period=="day"){
+			genericContent=genericContent.replace("_duration_", _global._bg._global.dailyContent.duration);
+		}else if(period=="week"){
+			genericContent=genericContent.replace("_duration_", _global._bg._global.weeklyContent.duration);
+		}
+		dashboardDiv.innerHTML=genericContent;
+	}
+	if(bugCount || bugCount==0){
+		let bugCountTag = document.querySelector("div#dashboardDiv span.bugCount");
+		bugCountTag.innerHTML=bugCount;
+	}
+	if(userStoryCount || userStoryCount==0){
+		let userStoryCountTag = document.querySelector('div#dashboardDiv span.userStoryCount');
+		userStoryCountTag.innerHTML=userStoryCount;
+	}
+	if(refreshTime){
+		let refreshTimeTag = document.querySelector('span#refreshTime');
+		refreshTimeTag.innerHTML=refreshTime;
+	}
+	if(leisureTask){
+		let leisureTaskTag = document.querySelector("div#dashboardDiv span.leisureTask");
+		leisureTaskTag.innerHTML=leisureTask;
+	}
+};
+const fetchRandomLeisureTask = () =>{
+	let leisureTaskList=_global._bg._global.leisureTaskList; 
+	let newLeisureTask = leisureTaskList[Math.floor(Math.random() * leisureTaskList.length)];
+	return newLeisureTask;
+};
+
 
 window.onload = () => {
 	let refreshBtn = document.getElementById('refreshBtn');
-	// let bugCountTag = document.getElementById('bugCount
-	// let userStoryCount= document.getElementById('userStoryCount');
-	// let bugCountTag = document.querySelector("div#dashboardDiv span.bugCount");
-	let leisureTaskTag= document.querySelector('span.leisureTask');
-
 	let dashboardDiv = document.getElementById('dashboardDiv');
+	
 	let _bg = chrome.extension.getBackgroundPage();
+	_global._bg=_bg;
 
 	const updateDashboardText = () => {
 		let str="";
-		let content=_bg._global.content;
-		content.forEach((s)=> {
+		let genericContent=_bg._global.genericContent;
+		genericContent.forEach((s)=> {
 			str+=s+"<br>";
 		});
 		str=str.replace('_bugCount_', '<span class="bugCount" style="color:blue;">_</span>');
@@ -24,34 +59,21 @@ window.onload = () => {
 	const updateDashboardContent = () => {
 		updateDashboardText();
 		// Below updating Bug count
+		chrome.storage.local.get('__period', function(periodData) {
+			refreshUI({period: periodData['__period']});
+		});
 		chrome.storage.local.get('__bug_count', function(bugCountData) {
-			if(bugCountData['__bug_count']){
-				let bugCountTag = document.querySelector("div#dashboardDiv span.bugCount");
-				bugCountTag.textContent=bugCountData['__bug_count'];
-			}
+			refreshUI({bugCount: bugCountData['__bug_count']});
 		});
 		// Below updating UserStory count
 		chrome.storage.local.get('__user_story_count', function(userStoryCountData) {
-			if(userStoryCountData['__user_story_count']){
-				let userStoryCountTag = document.querySelector('div#dashboardDiv span.userStoryCount');
-				userStoryCountTag.textContent=userStoryCountData['__user_story_count'];
-			}
+			refreshUI({userStoryCount: userStoryCountData['__user_story_count']});
 		});
-		// Below updating Leisure task
-		let leisureTaskList=_bg._global.leisureTaskList; 
-		// while(true){
-		let newValue = leisureTaskList[Math.floor(Math.random() * leisureTaskList.length)];
-		// 	if(newValue != )
-		// 		break;
-		// }
-		let leisureTaskTag = document.querySelector("div#dashboardDiv span.leisureTask");
-		leisureTaskTag.textContent=newValue;
+		
+		refreshUI({leisureTask:fetchRandomLeisureTask()});
 
 		chrome.storage.local.get('__refresh_time', function(refreshTimeData) {
-			if(refreshTimeData['__refresh_time']){
-				let refreshTimeTag = document.querySelector('span#refreshTime');
-				refreshTimeTag.textContent=refreshTimeData['__refresh_time'];
-			}
+			refreshUI({refreshTime:refreshTimeData['__refresh_time']});
 		});
 	};
 
@@ -59,20 +81,19 @@ window.onload = () => {
 
 	chrome.extension.onMessage.addListener(
 		function(request, sender, reply) {
-			console.log('reached background.js switch case:%s',request.method);
+			console.log('reached popup.js switch case:%s',request.method);
 			switch(request.method)
 			{
 				case 'setProcessedBugCountEvent':
-					refreshUI(request.data.bugCount);
+					// Using Object destructuring in order to use Named parameter here
+					refreshUI({period: request.data.period, bugCount: request.data.bugCount});
 					// reply(_global.messageText);
 					break;
 				case 'setProcessedStoryCountEvent':
-					refreshUI(null, request.data.userStoryCount);
-					// reply(_global.messageText);
+					refreshUI({userStoryCount: request.data.userStoryCount, leisureTask:fetchRandomLeisureTask()});
 					break;
 				case 'setRefreshTimeEvent':
-					refreshUI(null, null, request.data.refreshTime);
-					// reply(_global.messageText);
+					refreshUI({refreshTime: request.data.refreshTime});
 					break;
 					
 				default:
@@ -80,39 +101,12 @@ window.onload = () => {
 			}
 		}
 	);
-
-	const refreshUI = (bugCount, userStoryCount, refreshTime) => {
-		if(bugCount || bugCount==0){
-			let bugCountTag = document.querySelector("div#dashboardDiv span.bugCount");
-			bugCountTag.innerHTML=bugCount;
-		}
-		if(userStoryCount || userStoryCount==0){
-			let userStoryCountTag = document.querySelector('div#dashboardDiv span.userStoryCount');
-			userStoryCountTag.innerHTML=userStoryCount;
-		}
-		if(refreshTime){
-			let refreshTimeTag = document.querySelector('span#refreshTime');
-			refreshTimeTag.innerHTML=refreshTime;
-		}
-	};
-
-};
-
-
-refreshBtn.addEventListener("click", () => {
-	chrome.extension.sendMessage({'method':'refreshEvent'}, 
-		(response)=>{console.log('got response->|%s|',response);
+	// Adding click event for refresh button
+	refreshBtn.addEventListener("click", () => {
+		chrome.extension.sendMessage({'method':'refreshEvent'}, 
+			(response)=>{console.log('got response->|%s|',response);
+		});
 	});
-});
-
-const isStorageKeyEmpty = (obj) => {
-	if(obj && typeof obj === 'object'){
-		for(let key in obj) {
-			if(obj.hasOwnProperty(key))
-				return false;
-		}
-	}
-	return true;
 };
 
 const storageLogger = (startTime, keyValue) => {

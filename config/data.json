@@ -1,6 +1,6 @@
 {
-	"content":[
-		"Yesterday",
+	"genericContent":[
+		"_duration_",
 		"_bugCount_ bugs were logged in our team.",
 		"The same effort could be used",
 		"to finish",
@@ -8,6 +8,12 @@
 		"and also",
 		"_leisureTask_"
 	],
+	"dailyContent":{
+		"duration":"Yesterday"
+	},
+	"weeklyContent":{
+		"duration":"Last week"
+	},
 	"leisureTaskList":[
 		"Go for some Walk after lunch",
 		"Do some Cycling downstairs",
