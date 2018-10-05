@@ -3,22 +3,19 @@ _global={};
 // Using Object destructuring in order to use Named parameter here
 const refreshUI = ({period, bugCount, userStoryCount, leisureTask, refreshTime}) => {
 	if(period){
-		let dashboardDiv = document.getElementById('dashboardDiv');
-		let genericContent=dashboardDiv.innerHTML;
-
+		let durationTag = document.querySelector("span#duration");
 		if(period=="day"){
-			genericContent=genericContent.replace("_duration_", _global._bg._global.dailyContent.duration);
+			durationTag.innerHTML = _global._bg._global.dailyContent.duration;
 		}else if(period=="week"){
-			genericContent=genericContent.replace("_duration_", _global._bg._global.weeklyContent.duration);
+			durationTag.innerHTML = _global._bg._global.weeklyContent.duration;
 		}
-		dashboardDiv.innerHTML=genericContent;
 	}
 	if(bugCount || bugCount==0){
-		let bugCountTag = document.querySelector("div#dashboardDiv span.bugCount");
+		let bugCountTag = document.querySelector("span#bugCount");
 		bugCountTag.innerHTML=bugCount;
 	}
 	if(userStoryCount || userStoryCount==0){
-		let userStoryCountTag = document.querySelector('div#dashboardDiv span.userStoryCount');
+		let userStoryCountTag = document.querySelector('span#userStoryCount');
 		userStoryCountTag.innerHTML=userStoryCount;
 	}
 	if(refreshTime){
@@ -26,7 +23,7 @@ const refreshUI = ({period, bugCount, userStoryCount, leisureTask, refreshTime})
 		refreshTimeTag.innerHTML=refreshTime;
 	}
 	if(leisureTask){
-		let leisureTaskTag = document.querySelector("div#dashboardDiv span.leisureTask");
+		let leisureTaskTag = document.querySelector("span#leisureTask");
 		leisureTaskTag.innerHTML=leisureTask;
 	}
 };
@@ -40,7 +37,7 @@ const fetchRandomLeisureTask = () =>{
 window.onload = () => {
 	let refreshBtn = document.getElementById('refreshBtn');
 	let dashboardDiv = document.getElementById('dashboardDiv');
-	
+
 	let _bg = chrome.extension.getBackgroundPage();
 	_global._bg=_bg;
 
@@ -50,9 +47,10 @@ window.onload = () => {
 		genericContent.forEach((s)=> {
 			str+=s+"<br>";
 		});
-		str=str.replace('_bugCount_', '<span class="bugCount" style="color:blue;">_</span>');
-		str=str.replace('_userStoryCount_', '<span class="userStoryCount" style="color:blue;">_</span>');
-		str=str.replace('_leisureTask_', '<span class="leisureTask" style="color:blue;">_</span>');
+		str=str.replace('_duration_', '<span id="duration">_</span>');
+		str=str.replace('_bugCount_', '<span id="bugCount" style="color:blue;">_</span>');
+		str=str.replace('_userStoryCount_', '<span id="userStoryCount" style="color:blue;">_</span>');
+		str=str.replace('_leisureTask_', '<span id="leisureTask" style="color:blue;">_</span>');
 		dashboardDiv.innerHTML=str;
 	};
 
