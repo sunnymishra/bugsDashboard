@@ -1,7 +1,7 @@
 _global={};
 
 // Using Object destructuring in order to use Named parameter here
-const refreshUI = ({period, bugCount, userStoryCount, leisureTask, refreshTime}) => {
+const refreshUI = ({period, bugCount, userStoryCount, leisureTask, refreshTime, externalUrl}) => {
 	if(period){
 		let durationTag = document.querySelector("span#duration");
 		if(period=="day"){
@@ -26,6 +26,10 @@ const refreshUI = ({period, bugCount, userStoryCount, leisureTask, refreshTime})
 		let leisureTaskTag = document.querySelector("span#leisureTask");
 		leisureTaskTag.innerHTML=leisureTask;
 	}
+	if(externalUrl){
+		let externalUrlTag = document.querySelector("span#externalUrl");
+		externalUrlTag.innerHTML=externalUrl;
+	}
 };
 const fetchRandomLeisureTask = () =>{
 	let leisureTaskList=_global.bg._global.leisureTaskList; 
@@ -46,6 +50,7 @@ window.onload = () => {
 	});
 
 	const updateDashboardText = () => {
+		// console.log('____: %s', JSON.stringify(_global.bg._global));
 		let str="";
 		let genericContent=_global.bg._global.genericContent;
 		genericContent.forEach((s)=> {
@@ -77,6 +82,9 @@ window.onload = () => {
 		chrome.storage.local.get('__refresh_time', function(refreshTimeData) {
 			refreshUI({refreshTime:refreshTimeData['__refresh_time']});
 		});
+
+		refreshUI({externalUrl:_global.bg._global.externalUrl});
+
 	};
 
 	chrome.extension.onMessage.addListener(

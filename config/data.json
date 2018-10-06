@@ -21,5 +21,8 @@
 		"Join Yoga classes here @work",
 		"Read a Book from our library",
 		"Work on your GarageFest idea"
-	]
+	],
+	"externalUrl":"http://goo.gl/abcdef",
+	"bugzillaUrl":"https://blrbugzilla.yodlee.com/buglist.cgi?list_id=3756164&chfield=%5BBug%20creation%5D&chfieldfrom=_fromDate_&chfieldto=_toDate_&product=Demo%20Site&product=PFM%203.0&query_format=advanced"
+
 }

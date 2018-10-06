@@ -12,12 +12,12 @@
 		<div style="display:flex; flex-direction:column; align-items:center;">
 			<div id="dashboardDiv" align="center" style="font-size: 18px;">
 				Yesterday <br>
-				<span class="bugCount" style="color:blue;">_</span> bugs were logged in our team.<br>
+				<span id="bugCount" style="color:blue;">_</span> bugs were logged in our team.<br>
 				One engineer could use same effort <br>
 				to finish <br>
-			 	<span class="userStoryCount" style="color:blue;">_</span> new User stories <br>
+			 	<span id="userStoryCount" style="color:blue;">_</span> new User stories <br>
 				and also<br>
-			 	<span class="leisureTask" style="color:blue;">Go for some Walk after lunch</span>
+			 	<span id="leisureTask" style="color:blue;">Go for some Walk after lunch</span>
 			</div>
 			<div style="margin: 1%;">
 				<a id="refreshBtn" class="btn btn-info btn-sm" href="#">
@@ -26,6 +26,10 @@
 			</div>
 		</div>
 		<p style="text-align:left; font-size: 10px;">Last refreshed on <span id="refreshTime"><span></p>
+		<p style="text-align:left; font-size: 12px;">Find how to get less bugs in your code: 
+			<i><u><span id="externalUrl" style="color:blue;">_</span></u></i>
+		</p>
+
 
 	</div>
 	<!-- <div id="hiddenContentDiv" class="hidden">

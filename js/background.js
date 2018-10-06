@@ -48,7 +48,7 @@ chrome.extension.onMessage.addListener(
 
 const startRefresh = (period) => {
 	console.log('startRefresh(). Period: %s', period);
-	let url=_config.bugzillaUrl;
+	let url=_global.bugzillaUrl;
 	_global.period=period;  // storing this so we don't invoke startRefresh() for the same 'period' twice
 	url=replaceDatePlaceholder(url, period);
 	// chrome.tabs.create({"url":url,"selected":false}, function(tab){
@@ -155,7 +155,7 @@ const replaceDatePlaceholder = (url, period) => {
 		toDate = fromDate = timeSolver.subtract(new Date(), 1, "day");
 	}else if(period="week"){
 		fromDate	= timeSolver.subtract(new Date(), 7, "day");
-		toDate	  = timeSolver.subtract(new Date(), 1, "day");
+		toDate	    = timeSolver.subtract(new Date(), 1, "day");
 	}
 	let toDateStr = timeSolver.getString(toDate, "YYYY-MM-DD");
 	let fromDateStr = timeSolver.getString(fromDate, "YYYY-MM-DD");
