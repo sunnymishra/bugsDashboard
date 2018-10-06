@@ -5,9 +5,9 @@ const refreshUI = ({period, bugCount, userStoryCount, leisureTask, refreshTime})
 	if(period){
 		let durationTag = document.querySelector("span#duration");
 		if(period=="day"){
-			durationTag.innerHTML = _global._bg._global.dailyContent.duration;
+			durationTag.innerHTML = _global.bg._global.dailyContent.duration;
 		}else if(period=="week"){
-			durationTag.innerHTML = _global._bg._global.weeklyContent.duration;
+			durationTag.innerHTML = _global.bg._global.weeklyContent.duration;
 		}
 	}
 	if(bugCount || bugCount==0){
@@ -28,7 +28,7 @@ const refreshUI = ({period, bugCount, userStoryCount, leisureTask, refreshTime})
 	}
 };
 const fetchRandomLeisureTask = () =>{
-	let leisureTaskList=_global._bg._global.leisureTaskList; 
+	let leisureTaskList=_global.bg._global.leisureTaskList; 
 	let newLeisureTask = leisureTaskList[Math.floor(Math.random() * leisureTaskList.length)];
 	return newLeisureTask;
 };
@@ -38,12 +38,16 @@ window.onload = () => {
 	let refreshBtn = document.getElementById('refreshBtn');
 	let dashboardDiv = document.getElementById('dashboardDiv');
 
-	let _bg = chrome.extension.getBackgroundPage();
-	_global._bg=_bg;
+	// let _bg = chrome.extension.getBackgroundPage();
+	// _global._bg=_bg;
+	chrome.runtime.getBackgroundPage((bg)=>{
+		_global.bg=bg;	// Need to fetch background page before initializing popup page content
+		init();	// When popup screen is open, need to display stored bugCount and userStoryCount
+	});
 
 	const updateDashboardText = () => {
 		let str="";
-		let genericContent=_bg._global.genericContent;
+		let genericContent=_global.bg._global.genericContent;
 		genericContent.forEach((s)=> {
 			str+=s+"<br>";
 		});
@@ -54,7 +58,7 @@ window.onload = () => {
 		dashboardDiv.innerHTML=str;
 	};
 
-	const updateDashboardContent = () => {
+	const init = () => {
 		updateDashboardText();
 		// Below updating Bug count
 		chrome.storage.local.get('__period', function(periodData) {
@@ -74,8 +78,6 @@ window.onload = () => {
 			refreshUI({refreshTime:refreshTimeData['__refresh_time']});
 		});
 	};
-
-	updateDashboardContent();	// When popup screen is open, need to display stored bugCount and userStoryCount
 
 	chrome.extension.onMessage.addListener(
 		function(request, sender, reply) {
