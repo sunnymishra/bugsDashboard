@@ -1,7 +1,7 @@
 _global={};
 
 // Using Object destructuring in order to use Named parameter here
-const refreshUI = ({period, bugCount, userStoryCount, leisureTask, refreshTime, externalUrl}) => {
+const refreshUI = ({period, bugCount, userStoryCount, leisureTask, refreshTime, externalUrl, codingTips}) => {
 	if(period){
 		let durationTag = document.querySelector("span#duration");
 		if(period=="day"){
@@ -27,14 +27,24 @@ const refreshUI = ({period, bugCount, userStoryCount, leisureTask, refreshTime, 
 		leisureTaskTag.innerHTML=leisureTask;
 	}
 	if(externalUrl){
-		let externalUrlTag = document.querySelector("span#externalUrl");
+		let externalUrlTag = document.querySelector("a#externalUrl");
 		externalUrlTag.innerHTML=externalUrl;
+		externalUrlTag.href=externalUrl;
+	}
+	if(codingTips){
+		let codingTipsTag = document.querySelector("span#codingTips");
+		codingTipsTag.innerHTML=codingTips;
 	}
 };
 const fetchRandomLeisureTask = () =>{
 	let leisureTaskList=_global.bg._global.leisureTaskList; 
 	let newLeisureTask = leisureTaskList[Math.floor(Math.random() * leisureTaskList.length)];
 	return newLeisureTask;
+};
+const fetchRandomCodingTips = () =>{
+	let codingTips=_global.bg._global.codingTips; 
+	let newCodingTips = codingTips[Math.floor(Math.random() * codingTips.length)];
+	return newCodingTips;
 };
 
 
@@ -77,13 +87,15 @@ window.onload = () => {
 			refreshUI({userStoryCount: userStoryCountData['__user_story_count']});
 		});
 		
-		refreshUI({leisureTask:fetchRandomLeisureTask()});
-
 		chrome.storage.local.get('__refresh_time', function(refreshTimeData) {
 			refreshUI({refreshTime:refreshTimeData['__refresh_time']});
 		});
 
-		refreshUI({externalUrl:_global.bg._global.externalUrl});
+		refreshUI({
+			externalUrl:_global.bg._global.externalUrl, 
+			codingTips:fetchRandomCodingTips(),
+			leisureTask:fetchRandomLeisureTask()
+		});
 
 	};
 

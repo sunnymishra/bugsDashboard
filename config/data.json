@@ -19,10 +19,42 @@
 		"Do some Cycling downstairs",
 		"Join Guitar classes here @work",
 		"Join Yoga classes here @work",
-		"Read a Book from our library",
-		"Work on your GarageFest idea"
-	],
-	"externalUrl":"http://goo.gl/abcdef",
-	"bugzillaUrl":"https://blrbugzilla.yodlee.com/buglist.cgi?list_id=3756164&chfield=%5BBug%20creation%5D&chfieldfrom=_fromDate_&chfieldto=_toDate_&product=Demo%20Site&product=PFM%203.0&query_format=advanced"
+		"Read a Book",
+		"Work on your GarageFest idea",
+		"Take technical trainings",
+		"Take behavioral trainings"
 
+	],
+	"codingTips":[
+		"Between Code-Optimization & Code-Readability, choose Code Readability. Always.",
+		"What do you choose for a bug fix? Short term fix OR Long-term solution with underlying architecture in mind.",
+		"Kids write huge monolithic methods. Legends keep it simple: One method – one task.",
+		"Modular code is our mantra. We always write Module code. Wait, what is “Modular code” again?",
+		"Writing Single line fancy code is cool. But then, verbose code gets fewer bugs in production.",
+		"Avoid Fancy code 101: Choose Switch-case instead of Ternary operator or huge single line if condition.",
+		"Avoid Fancy code 101: Always use Curly braces {} around if-else, switch-case and for loops",
+		"I promise to maintain my written Code for the next 10 years. So I will not write Comments in my code. Would you promise the same?",
+		"I have the sharpest Memory in my entire team. I remember all my code. So I will not write Comments in my code. What about you?",
+		"Loosely coupled code, Modular code & Refactored code are the same thing. Google them today.",
+		"Your b.ful Code has right to get reviewed. Remember your rights. Ask for code review every time.",
+		"Extract Repetitive code into separate utility functions. At least try once, you will thank me later.",
+		"Write a sufficient amount of debug logs in your code. Remember overconfidence killed the cat.",
+		"Feel proud if you could write 10 Unit test cases for just 1 new Function you wrote.",
+		"Unit-test and Code-coverage are different things. Google “Code coverage” today.",
+		"Global variables are your enemy. Avoid them in your code, if you can.",
+		"Integration testing and Unit-testing are not the same. What are you testing?",
+		"‘My test-case is my test-case, none of your test-case’ :P Well, all I am sayin’ is: Don’t share your test-cases with your Tester teammate.",
+		"Add documentation for each function you write. You will forget in 6 months what your own Function does.",
+		"Adopt Functional programming, use Map, reduce, Filters in your code. Declarative code is fun to write and more readable.",
+		"Immutable variables have saved many lives. Try final(Java) & const(Javascript) variables today in your code.",
+		"NullPointer exception misses you a lot. Let it miss you more, put the Null check in your code.",
+		"It is tempting to catch the Parent/Generic exception, isn’t it? It’s sinful, don’t do that.",
+		"Don’t do Object comparison in Java using == operator. Use equals() method instead.",
+		"Did you forget to Close the Resources your Code consumed, such as IO connection, DB connection?",
+		"Always let your Function Handle the Exception, don’t wait for your calling function to handle it. Don’t be lazy.",
+		"Updating a List/Map while iterating over it is Bad programming. Use functional programming concept of Map-Reduce in Java8 OR Javascript ES6 instead.",
+		"80% of the time you are working on someone else’s legacy code. Respect others, Write simpler readable code."
+	],
+	"externalUrl":"https://bit.ly/2Rielad",
+	"bugzillaUrl":"https://blrbugzilla.yodlee.com/buglist.cgi?bug_status=UNCONFIRMED&bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED&chfield=[Bug creation]&chfield=resolution&chfieldfrom=_fromDate_&chfieldto=_toDate_&list_id=3756164&product=Demo Site&product=MoneyCenter – FinApps&product=MoneyCenter – HTML FinApps&product=PFM 3.0&product=Platform&product=Wealth&query_format=advanced"
 }
